@@ -1,3 +1,4 @@
+// quiz-app.js
 const quizContainer = document.getElementById('quiz-container');
 const questionNumberElement = document.getElementById('question-number');
 const questionElement = document.getElementById('question');
@@ -23,10 +24,11 @@ let score = 0;
 let isGameOver = false;
 let previousQuestions = [];
 let timer;
-let timerValue = 60; // Timer duration in seconds
+let timerValue = 30;
 let questionCount = 0;
-let totalQuestions = 10; // Total number of questions per round
-let questions = []; // Array to store fetched questions
+let totalQuestions = 10;
+let questions = [];
+let isAnswerSelected = false;
 
 // Fetch categories from the Open Trivia Database API
 async function fetchCategories() {
@@ -61,11 +63,9 @@ function displayQuestion(question) {
   questionNumberElement.textContent = `Question ${questionCount + 1}`;
   questionElement.textContent = decodeHtml(question.question);
   answersElement.innerHTML = '';
-
   const answers = [...question.incorrect_answers];
   answers.push(question.correct_answer);
   answers.sort(() => Math.random() - 0.5);
-
   answers.forEach(answer => {
     const answerElement = document.createElement('div');
     answerElement.textContent = decodeHtml(answer);
@@ -73,9 +73,9 @@ function displayQuestion(question) {
     answerElement.addEventListener('click', selectAnswer);
     answersElement.appendChild(answerElement);
   });
-
   nextQuestionButton.style.display = 'none';
-  answerFeedback.style.display = 'none'; // Clear the feedback message
+  answerFeedback.style.display = 'none';
+  isAnswerSelected = false;
 }
 
 // Decode HTML entities
@@ -87,7 +87,7 @@ function decodeHtml(html) {
 
 // Handle answer selection
 function selectAnswer(event) {
-  if (isGameOver) return;
+  if (isGameOver || isAnswerSelected) return;
 
   const selectedAnswer = event.target.textContent;
   const isCorrect = selectedAnswer === decodeHtml(currentQuestion.correct_answer);
@@ -112,6 +112,14 @@ function selectAnswer(event) {
   clearTimer();
   answerFeedback.style.display = 'block';
   nextQuestionButton.style.display = 'block';
+  isAnswerSelected = true;
+
+  // Disable answer selection after an answer is selected or the timer runs out
+  const answerElements = answersElement.getElementsByClassName('answer');
+  Array.from(answerElements).forEach(answerElement => {
+    answerElement.removeEventListener('click', selectAnswer);
+    answerElement.classList.add('disabled');
+  });
 }
 
 // Fetch and display a new question
@@ -126,8 +134,8 @@ async function fetchAndDisplayQuestion() {
     if (questions.length === 0) {
       questions = await fetchQuestions();
     }
-    question = questions[questionCount];
-  } while (previousQuestions.some(q => q.question === question.question));
+    question = questions.shift();
+  } while (previousQuestions.includes(question));
 
   displayQuestion(question);
   startTimer();
@@ -135,16 +143,37 @@ async function fetchAndDisplayQuestion() {
 
 // Start the timer
 function startTimer() {
-  timerValue = 60;
+  timerValue = 30;
   timerElement.textContent = timerValue;
   timerBar.style.width = '100%';
   timer = setInterval(() => {
     timerValue--;
     timerElement.textContent = timerValue;
-    timerBar.style.width = `${(timerValue / 60) * 100}%`;
+    timerBar.style.width = `${(timerValue / 30) * 100}%`;
     if (timerValue === 0) {
       clearTimer();
-      selectAnswer({ target: { textContent: '' } }); // Treat as an incorrect answer
+      answerFeedback.textContent = 'Time Up - No More Time Remaining';
+      answerFeedback.classList.remove('correct');
+      answerFeedback.classList.remove('incorrect');
+      answerFeedback.style.display = 'block';
+      nextQuestionButton.style.display = 'block';
+
+      // Display the correct answer when the timer runs out
+      const correctAnswerElement = document.createElement('div');
+      correctAnswerElement.textContent = `Correct Answer: ${decodeHtml(currentQuestion.correct_answer)}`;
+      correctAnswerElement.classList.add('correct');
+      answersElement.appendChild(correctAnswerElement);
+
+      // Disable answer selection after the timer runs out
+      const answerElements = answersElement.getElementsByClassName('answer');
+      Array.from(answerElements).forEach(answerElement => {
+        answerElement.removeEventListener('click', selectAnswer);
+        answerElement.classList.add('disabled');
+      });
+
+      // Increment the question count
+      questionCount++;
+      previousQuestions.push(currentQuestion);
     }
   }, 1000);
 }
@@ -210,7 +239,7 @@ endGameButton.addEventListener('click', endGame);
 
 // Next question functionality
 nextQuestionButton.addEventListener('click', () => {
-  answerFeedback.style.display = 'none'; // Clear the feedback message
+  answerFeedback.style.display = 'none';
   fetchAndDisplayQuestion();
 });
 
