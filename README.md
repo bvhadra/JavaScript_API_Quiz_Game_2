@@ -24,9 +24,9 @@ Play Again: After the game ends, users have the option to restart the quiz.
 Quit: Users can choose to exit the game entirely.
 <h3>Technical Details</h3>
 <h4>File Structure</h4>
-index.html: The main HTML file that structures the web page and links the stylesheet and JavaScript file.
-styles.css: The CSS file that styles the quiz interface, including layout, colors, and fonts.
-quiz-app.js: The JavaScript file that contains the logic for fetching questions, handling user interactions, updating the UI, and managing game state.
+<h4>index.html:</h4> The main HTML file that structures the web page and links the stylesheet and JavaScript file.
+<h4>styles.css:</h4> The CSS file that styles the quiz interface, including layout, colors, and fonts.
+<h4>quiz-app.js:</h4> The JavaScript file that contains the logic for fetching questions, handling user interactions, updating the UI, and managing game state.
 <h4>How It Works</h4>
 <h4>Initialization:</h4> When the page loads, the category options are populated by fetching data from the Open Trivia Database API.
 <h4>Starting the Quiz:</h4> Users select a category and difficulty level to start the quiz. The application then fetches questions based on the selected options.
