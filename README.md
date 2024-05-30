@@ -3,8 +3,8 @@
 <h4>The Trivia Quiz Game is an interactive web-based quiz application designed to challenge users with a variety of trivia questions. Built with JavaScript, HTML, and CSS, this application leverages the Open Trivia Database API to fetch trivia questions, providing users with a dynamic and engaging quiz experience. The game offers advanced features such as category and difficulty selection, a countdown timer, and real-time feedback on answers.</h4>
 
 <h3>Features</h3>
-<h4>
-1. User-Friendly Interface
+
+<h4>1. User-Friendly Interface</h4>
 Responsive Design: The application is designed to be accessible on various devices, including desktops, tablets, and mobile phones.
 Modern Aesthetic: Utilizes Google Fonts for a clean and professional look.
 2. Dynamic Quiz Settings
@@ -37,4 +37,4 @@ Users select an answer, and the application provides immediate feedback.
 The score is updated based on the user's answer.
 After feedback, users can proceed to the next question.
 End of Game: After answering all questions or ending the game early, the user’s final score is displayed, and they can choose to play again or quit.
-</h4>
+
