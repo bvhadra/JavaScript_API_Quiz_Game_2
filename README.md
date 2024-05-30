@@ -28,13 +28,13 @@ index.html: The main HTML file that structures the web page and links the styles
 styles.css: The CSS file that styles the quiz interface, including layout, colors, and fonts.
 quiz-app.js: The JavaScript file that contains the logic for fetching questions, handling user interactions, updating the UI, and managing game state.
 <h4>How It Works</h4>
-Initialization: When the page loads, the category options are populated by fetching data from the Open Trivia Database API.
-Starting the Quiz: Users select a category and difficulty level to start the quiz. The application then fetches questions based on the selected options.
-Gameplay:
+<h4>Initialization:</h4> When the page loads, the category options are populated by fetching data from the Open Trivia Database API.
+<h4>Starting the Quiz:</h4> Users select a category and difficulty level to start the quiz. The application then fetches questions based on the selected options.
+<h4>Gameplay:</h4>
 A question is displayed with multiple answer choices.
 A timer starts counting down from 30 seconds.
 Users select an answer, and the application provides immediate feedback.
 The score is updated based on the user's answer.
 After feedback, users can proceed to the next question.
-End of Game: After answering all questions or ending the game early, the user’s final score is displayed, and they can choose to play again or quit.
+<h4>End of Game:</h4> After answering all questions or ending the game early, the user’s final score is displayed, and they can choose to play again or quit.
 
